@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Meu Golang</title>
+        <link rel="stylesheet" href="static/css/styles.css">
+    </head>
+    <body>
+        <!-- Header -->
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <a href="home" class="logo">Meu Golang</a>
+                    <nav>
+                        <a href="register">Registrar</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Login -->
+        <div class="body2">
+            <div class="login-container">
+                <div class="logoLogin">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                        <polyline points="10 17 15 12 10 7" />
+                        <line x1="15" y1="12" x2="3" y2="12" />
+                    </svg>
+                </div>
+                <h1>Logado com sucesso!</h1>
+                <p class="subtitle">Bem-vindo de volta!</p>
+
+                <!-- ID e Token preenchidos a partir do localStorage -->
+                <p><strong>ID:</strong>
+                    <input type="text" id="userId" name="userId" value="" disabled>
+                </p>
+                
+                <div class="form-group">
+                    <strong for="token">Token:</strong>
+                    <input type="text" id="token" name="token" value="" disabled>
+                </div>
+
+                <button style="background-color: red;" onclick="logout()">Sair</button>
+            </div>
+        </div>
+
+        <script>
+            // Preencher os campos com os valores do localStorage
+            document.getElementById('userId').value = localStorage.getItem('userId');
+            document.getElementById('token').value = localStorage.getItem('token');
+
+            // Função para logout
+            function logout() {
+                localStorage.removeItem('userId');
+                localStorage.removeItem('token');
+                window.location.href = '/login';  // Redirecionar para a página de login
+            }
+        </script>
+    </body>
+</html>

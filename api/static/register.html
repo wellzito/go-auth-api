@@ -1,0 +1,145 @@
+<!DOCTYPE html> 
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Meu Golang</title>
+        <link rel="stylesheet" href="static/css/styles.css">
+    </head>
+    <body>
+        <!-- Header -->
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <a href="home" class="logo">Meu Golang</a>
+                    <nav>
+                        <a href="login">Entrar</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Register -->
+        <div class="body2">
+            <div class="register-container">
+                <div class="logoRegister">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <line x1="19" y1="8" x2="19" y2="14"/>
+                        <line x1="22" y1="11" x2="16" y2="11"/>
+                    </svg>
+                </div>
+                <h1>Criar conta</h1>
+                <p class="subtitle">Preencha seus dados para se registrar</p>
+
+                <form onsubmit="createAccount(event)">
+                    <div class="form-group">
+                        <label for="name">Nome completo</label>
+                        <div class="input-group">
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            <input type="text" id="name" name="name" placeholder="Seu nome completo" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Nome de usuário</label>
+                        <div class="input-group">
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            <input type="text" id="username" name="username" placeholder="Escolha um nome de usuário" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <div class="input-group">
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="20" height="16" x="2" y="4" rx="2"/>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                            </svg>
+                            <input type="email" id="email" name="email" placeholder="Seu melhor e-mail" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <div class="input-group">
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                            <input type="password" id="password" name="password" placeholder="Crie uma senha forte" required minlength="8">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">Confirmar senha</label>
+                        <div class="input-group">
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirme sua senha" required minlength="8">
+                        </div>
+                    </div>
+
+                    <button type="submit">Criar conta</button>
+                </form>
+
+                <a href="/login" class="login-link">Já tem uma conta? Entre aqui</a>
+            </div>
+        </div>
+
+        <script>
+            // Função para criar a conta
+            async function createAccount(event) {
+                event.preventDefault(); // Previne o envio do formulário
+
+                // Pegando os valores dos campos do formulário
+                const nome = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const senha = document.getElementById('password').value;
+                const nick = document.getElementById('username').value;
+
+                const data = {
+                    nome: nome,
+                    email: email,
+                    senha: senha,
+                    nick: nick
+                };
+
+                try {
+                    // Enviando a requisição para o backend
+                    const response = await fetch('http://localhost:8080/usuarios', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    // Se a resposta for OK, mostramos o alert
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result.id) {
+                            alert('Conta criada com sucesso!');
+                            window.location.href = '/login';  // ou outro caminho
+                        } else {
+                            alert('Erro ao criar conta!');
+                        }
+                    } else {
+                        alert('Erro ao se comunicar com o servidor.');
+                    }
+                } catch (error) {
+                    alert('Erro ao fazer a requisição: ' + error.message);
+                }
+            }
+        </script> 
+    </body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meu Golang</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="home" class="logo">Meu Golang</a>
+                <nav>
+                    <a href="register">Registrar</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Login -->
+    <div class="body2">
+        <div class="login-container">
+            <div class="logoLogin">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                    <polyline points="10 17 15 12 10 7" />
+                    <line x1="15" y1="12" x2="3" y2="12" />
+                </svg>
+            </div>
+            <h1>Bem-vindo de volta</h1>
+            <p class="subtitle">Entre com suas credenciais</p>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div class="input-group">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        <input type="email" id="email" name="email" placeholder="Seu email" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <div class="input-group">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                        <input type="password" id="password" name="password" placeholder="Sua senha" required />
+                    </div>
+                </div>
+
+                <button type="submit">Entrar</button>
+            </form>
+
+            <a href="/forgot-password" class="forgot-password">Esqueceu sua senha?</a>
+            <a href="/register" class="register-link">Não tem uma conta? Cadastre-se aqui</a>
+        </div>
+    </div>
+
+    <script>
+        // Quando o formulário for enviado
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();  // Impede o envio do formulário convencional
+
+            // Coletando os valores do formulário
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Criando o corpo da requisição JSON
+            const data = {
+                email: email,
+                senha: password
+            };
+
+            // Enviando a requisição com fetch
+            fetch('http://localhost:8080/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Manipular a resposta do servidor aqui
+                console.log('Sucesso:', data);
+                if (data.id && data.token) {
+                    // Armazena o ID e o token no localStorage
+                    localStorage.setItem('userId', data.id);
+                    localStorage.setItem('token', data.token);
+
+                    // Redireciona para a próxima página (por exemplo: dashboard)
+                    window.location.href = '/logado';  // ou outro caminho
+                } else {
+                // Tratar caso de erro no login
+                console.error('Erro no login:', data.message);
+                }
+            })
+            .catch((error) => {
+                // Manipular erro
+                console.error('Erro:', error);
+            });
+        });
+    </script>
+</body>
+</html>

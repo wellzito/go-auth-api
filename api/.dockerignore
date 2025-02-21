@@ -1,0 +1,12 @@
+# Ignora arquivos de cache e build
+*.log
+*.tmp
+*.swp
+node_modules/
+build/
+.dockerignore
+.http
+
+# Ignora arquivos do sistema operacional
+.DS_Store
+Thumbs.db

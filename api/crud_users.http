@@ -1,0 +1,49 @@
+// LOGIN
+POST  http://localhost:9000/login
+Content-Type: application/json
+
+{
+  "email": "",
+  "senha": ""
+}
+###
+
+// CREATE USER
+POST  http://localhost:9000/usuarios
+Content-Type: application/json
+
+{
+    "nome": "",
+    "email": "",
+    "senha": "",
+    "nick": ""
+}
+###
+
+//Atualizar usuario
+PUT   http://localhost:9000/usuarios/{usuarioId}
+Content-Type: application/json
+Authorization:
+###
+
+//Deletar usuario
+DELETE    http://localhost:9000/usuarios/{usuarioId}
+Content-Type: application/json
+Authorization:
+###
+
+//Atualizar senha
+POST   http://localhost:9000/usuarios/{usuarioId}/atualizar-senha
+Content-Type: application/json
+Authorization:
+###
+
+//Nova senha
+POST   http://localhost:9000/nova-senha
+Content-Type: application/json
+Authorization:
+{
+    "novaSenha": "123",
+    "ConfirmarSenha": "1234"
+}
+###

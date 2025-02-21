@@ -1,0 +1,52 @@
+services:
+  mydocker:
+    container_name: mydocker
+    image: postgres:13
+    env_file: # Remova essa linha e a linha abaixo se estiver em produção
+      - .env  # Carrega o arquivo .env com as variáveis de ambiente
+    environment:
+      - POSTGRES_PASSWORD=${DB_SENHA}  # Defina a senha do superusuário
+      - POSTGRES_DB=${DB_NOME}         # Nome do banco de dados
+      - POSTGRES_USER=${DB_USUARIO}    # Usuário do banco de dados
+      - APP_PORT=${APP_PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_NOME=${DB_NOME}
+      - DB_PORT=${DB_PORT}
+      - DB_USUARIO=${DB_USUARIO}
+      - DB_SENHA=${DB_SENHA}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      
+  redis:  # <--- Adicionando o Redis
+    container_name: redis
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"    
+
+  backend:  # <- Troquei de "api" para "backend"
+    container_name: api
+    build: .  # Caminho correto do Dockerfile da API
+    environment:
+      - POSTGRES_PASSWORD=${DB_SENHA}  # Defina a senha do superusuário
+      - POSTGRES_DB=${DB_NOME}         # Nome do banco de dados
+      - POSTGRES_USER=${DB_USUARIO}    # Usuário do banco de dados
+      - APP_PORT=${APP_PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_NOME=${DB_NOME}
+      - DB_PORT=${DB_PORT}
+      - DB_USUARIO=${DB_USUARIO}
+      - DB_SENHA=${DB_SENHA}
+      - SECRET_KEY=${SECRET_KEY}
+    ports:
+      - "${APP_PORT}:${APP_PORT}"  # Usa a variável do .env
+    env_file: # Remova essa linha e a linha abaixo se estiver em produção
+      - .env  # Carrega as variáveis do .env também para a API
+    depends_on:
+      - mydocker  # Garante que o banco suba antes da API
+    command: sh -c "until nc -z -v -w30 mydocker 5432; do echo 'Esperando PostgreSQL...'; sleep 5; done && until nc -z -v -w30 redis 6379; do echo 'Esperando Redis...'; sleep 5; done && /app/main"
+
+volumes:
+  pgdata: {}
