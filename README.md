@@ -162,37 +162,41 @@ Se for fazer deploy em produção, remova as seguintes linhas:
 - **docker-compose.yml:**
 
 Linhas 5/6 e 45/46
-	```sh
-    env_file: # Remova essa linha e a linha abaixo se estiver em produção
-      - .env  # Carrega o arquivo .env com as variáveis de ambiente
-	```
+
+```sh
+env_file: # Remova essa linha e a linha abaixo se estiver em produção
+- .env  # Carrega o arquivo .env com as variáveis de ambiente
+```
 	
 - **Dockerfile:**
 
 Linhas 12/13 e 32/33
-	```sh
-    COPY .env ./ 
-	```
+
+```sh
+COPY .env ./ 
+```
 
 - **main.go:**
 
 Linhas 18 até 22
-	```sh
-    // Carrega as variáveis do .env remover se tiver em produção
-	erro := godotenv.Load()
-	if erro != nil {
-		log.Fatal("Erro ao carregar o arquivo .env")
-	}
-	```
+
+```sh
+// Carrega as variáveis do .env remover se tiver em produção
+erro := godotenv.Load()
+f erro != nil {
+log.Fatal("Erro ao carregar o arquivo .env")
+}
+```
 
 - **config.go:**
 
 Linhas 34 até 39
-	```sh
-    //Descomente para usar local e comente para usar em prod
-	// Carregar as variáveis de ambiente primeiro
-	//Remover função abaixo se tiver em produção
-	if erro = godotenv.Load(); erro != nil {
-		log.Fatal(erro)
-	}
-	```	
+
+```sh
+//Descomente para usar local e comente para usar em prod
+// Carregar as variáveis de ambiente primeiro
+//Remover função abaixo se tiver em produção
+if erro = godotenv.Load(); erro != nil {
+log.Fatal(erro)
+}
+```	
